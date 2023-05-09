@@ -19,7 +19,7 @@ public class WriterBackgroundService : BackgroundService
     {
         return base.StopAsync(cancellationToken);
     }
-
+    
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         int count = 0;

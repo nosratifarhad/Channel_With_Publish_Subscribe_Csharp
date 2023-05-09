@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#region AddServices
 
 builder.Services.AddSingleton(Channel.CreateUnbounded<int>(new UnboundedChannelOptions() { SingleReader = true }));
 builder.Services.AddSingleton(svc => svc.GetRequiredService<Channel<int>>().Reader);
@@ -17,6 +18,9 @@ builder.Services.AddSingleton(svc => svc.GetRequiredService<Channel<int>>().Writ
 
 builder.Services.AddHostedService<ReaderBackgroundService>();
 builder.Services.AddHostedService<WriterBackgroundService>();
+
+#endregion AddServices
+
 
 var app = builder.Build();
 
