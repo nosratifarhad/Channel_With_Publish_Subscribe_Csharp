@@ -1,9 +1,9 @@
-﻿public interface IBackgroundTaskQueue
-{
-    ValueTask QueueBackgroundWorkItemAsync(
-        Func<CancellationToken, Task> workItem);
+﻿namespace ChannelWithPublishSubscribeApplication.Channels.Contracts;
 
-    ValueTask<Func<CancellationToken, Task>> DequeueAsync(
-        CancellationToken cancellationToken);
+public interface IBackgroundTaskQueue
+{
+    ValueTask QueueBackgroundWorkItemAsync(Func<CancellationToken, Task> workItem);
+
+    ValueTask<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken);
 
 }

@@ -11,7 +11,6 @@ public class ReaderBackgroundService : BackgroundService
         _channelReader = channelReader;
     }
 
-
     public override Task StartAsync(CancellationToken cancellationToken)
     {
         return base.StartAsync(cancellationToken);

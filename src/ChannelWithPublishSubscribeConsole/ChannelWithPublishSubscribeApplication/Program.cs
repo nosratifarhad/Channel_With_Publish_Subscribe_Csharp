@@ -1,3 +1,7 @@
+using ChannelWithPublishSubscribeApplication.BackgroundServices;
+using ChannelWithPublishSubscribeApplication.Channels;
+using ChannelWithPublishSubscribeApplication.Channels.Contracts;
+
 internal class Program
 {
     private static void Main(string[] args)
