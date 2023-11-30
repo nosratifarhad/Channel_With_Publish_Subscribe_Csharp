@@ -1,6 +1,6 @@
 # Hello  
 
-## I Implement Channel using in two project into type For You ...
+## I have added two projects to this repository to help convey my point and provide more context for better understanding.
 
 projct Number one :
 ### you need two BackgroundService for write item in channel And read item .
