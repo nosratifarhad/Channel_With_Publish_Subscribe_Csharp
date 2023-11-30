@@ -1,18 +1,31 @@
-﻿using Microsoft.OpenApi.Validations;
+﻿
+using ChannelWithPublishSubscribeApplication.Channels.Contracts;
+
+namespace ChannelWithPublishSubscribeApplication.BackgroundServices;
 
 public sealed class LongRunningTaskBackgroundService : BackgroundService
 {
-    private readonly IBackgroundTaskQueue _taskQueue;
+    #region [ Field ]
 
-    public LongRunningTaskBackgroundService(
-        IBackgroundTaskQueue taskQueue)
+    private readonly IBackgroundTaskQueue _backgroundTaskQueue;
+    #endregion [ Field ]
+
+    #region [ Ctor ]
+
+    public LongRunningTaskBackgroundService(IBackgroundTaskQueue backgroundTaskQueue)
     {
-        this._taskQueue = taskQueue;
+        this._backgroundTaskQueue = backgroundTaskQueue;
     }
+    #endregion  [Ctor]
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         await base.StartAsync(cancellationToken);
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        await base.StopAsync(cancellationToken);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -25,32 +38,27 @@ public sealed class LongRunningTaskBackgroundService : BackgroundService
         await Task.Yield();
 
         while (!stoppingToken.IsCancellationRequested)
+        {
             try
             {
                 await Task.Delay(1000, stoppingToken);
 
-                var task = await _taskQueue.DequeueAsync(stoppingToken);
+                var task = await _backgroundTaskQueue.DequeueAsync(stoppingToken);
 
                 await task(stoppingToken);
             }
-            catch (OperationCanceledException operationCanceledException)
+            catch (OperationCanceledException)
             {
-                Console.WriteLine(
-                    "Operation was cancelled because host is shutting down");
+                Console.WriteLine("Operation was cancelled because host is shutting down");
             }
-            catch (AggregateException aggregateException)
+            catch (AggregateException)
             {
-                Console.WriteLine(//aggregateException.Flatten(), 
-                    "Aggregate exception occurred");
+                Console.WriteLine("Aggregate exception occurred");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Console.WriteLine("Error occurred executing task work item");
             }
-    }
-
-    public override async Task StopAsync(CancellationToken cancellationToken)
-    {
-        await base.StopAsync(cancellationToken);
+        }
     }
 }
